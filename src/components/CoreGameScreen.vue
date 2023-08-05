@@ -59,19 +59,21 @@ async function checkIfCorrect(aiAnswer: string) {
 </script>
 
 <template>
-  <Scrollable ref="scrollable" class="container">
+  <div class="container">
     <ProfilePicture
-      :img-path="entityImagePathToBe"
-      class="entity-picture"
-      :key="entityImagePathToBe"
+        :img-path="entityImagePathToBe"
+        class="entity-picture"
+        :key="entityImagePathToBe"
     />
-    <MessageBubble
-      v-for="message in messages"
-      class="message-bubble"
-      style="position: relative"
-      :message="message"
-    />
-  </Scrollable>
+    <Scrollable ref="scrollable" class="scrollable">
+      <MessageBubble
+          v-for="message in messages"
+          class="message-bubble"
+          style="position: relative"
+          :message="message"
+      />
+    </Scrollable>
+  </div>
 
   <UserInput v-if="!gameFinished" @input="processInput" />
 </template>
@@ -85,6 +87,8 @@ async function checkIfCorrect(aiAnswer: string) {
 .container {
   overflow: visible;
   position: relative;
+}
+.scrollable {
   .message-bubble:nth-child(odd) {
     align-self: flex-start;
     background-color: lightcyan;
