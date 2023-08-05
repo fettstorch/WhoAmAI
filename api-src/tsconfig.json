@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "outDir": "../api",
+    "rootDir": "./",
+    "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true
+  },
+  "include": ["./**/*.ts"],
+  "exclude": ["node_modules", "./dist"]
+}

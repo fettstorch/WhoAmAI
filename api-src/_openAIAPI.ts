@@ -4,7 +4,7 @@ const model = "gpt-4";
 
 // Set up OpenAI API credentials
 const configuration = new Configuration({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const openAi = new OpenAIApi(configuration);
 
@@ -70,7 +70,7 @@ export async function getIntroAsPerson(options: {
 
 /**
  * Determines whether the given message is a question about a person.
- * @param {string} question - The message to be checked.
+ * @param {string} options - The message to be checked.
  * @returns {Promise<boolean>} - A Promise that resolves to a boolean value indicating whether the message is a question about a person or not.
  */
 export async function askQuestionAboutEntity(options: {
@@ -133,9 +133,6 @@ export async function askQuestionAboutEntity(options: {
   });
   const gptAnswer = completion.data.choices[0].message?.content;
 
-  console.debug("[USR QUESTION:", question);
-  console.debug("[GPT ANSWER:  ", gptAnswer);
-
   return gptAnswer?.replace(/'/g, "") ?? "pls try again";
 }
 
@@ -151,49 +148,4 @@ export async function getEntityImageUrl(options: {
     size: "256x256",
   });
   return (await response).data.data[0].url;
-}
-
-//vitest
-if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
-
-  it('ai askQuestionAboutEntity returns false for "Who is the president of the USA?"', async () => {
-    const response = await askQuestionAboutEntity({
-      question: "Who is the president of the USA?",
-      entity: "Gregor Gysi",
-    });
-    expect(response).toBe("not a question about me.");
-  });
-
-  it('ai askQuestionAboutEntity returns false for "is Joel Miller a character from The Last Of Us?"', async () => {
-    const response = await askQuestionAboutEntity({
-      question: "is Joel Miller a character from The Last Of Us?",
-      entity: "Ash Ketchum",
-    });
-    expect(response).toBe("not a question about me.");
-  });
-
-  it('ai askQuestionAboutEntity returns false for "is Papa Roach a musician from the 18th century?"', async () => {
-    const response = await askQuestionAboutEntity({
-      question: "is Papa Roach a musician from the 18th century?",
-      entity: "Son Goku",
-    });
-    expect(response).toBe("not a question about me.");
-  });
-
-  it('ai askQuestionAboutEntity returns false for "whats the distance from earth to the moon?"', async () => {
-    const response = await askQuestionAboutEntity({
-      question: "whats the distance from earth to the moon?",
-      entity: "Peppa Pig",
-    });
-    expect(response).toBe("not a question about me.");
-  });
-
-  it('ai isQuestionAboutPerson returns true for "are you a vampire?" when asking Nosferatu', async () => {
-    const response = await askQuestionAboutEntity({
-      question: "are you a vampire?",
-      entity: "Nosferatu",
-    });
-    expect(response).not.toBe("not a question about me.");
-  });
 }
