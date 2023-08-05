@@ -18,12 +18,11 @@ function clearInput() {
 
 <template>
   <div class="user-input-container">
-    <label for="user-input">Enter your question:</label>
     <input
-      id="user-input"
       type="text"
       v-model="rawInput"
       @keydown.enter="sendMessage"
+      placeholder="Enter your question..."
       autofocus
     />
   </div>
@@ -34,11 +33,10 @@ function clearInput() {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
 }
 
 input {
-  width: 375px;
   text-align: center;
+  width: 100%;
 }
 </style>

@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import HelloWorld from './components/CoreGameScreen.vue'
 import viteImg from './assets/vite.svg'
+import CoreGameScreen from "./components/CoreGameScreen.vue";
 </script>
 
 <template>
-  <div>
+  <!-- CoreGameScreen -->
+  <CoreGameScreen class="screen" />
+
+  <!-- footer -->
+  <div class="footer">
+    <span>Powered by</span>
     <a href="https://vitejs.dev" target="_blank">
       <img :src="viteImg" class="logo" alt="Vite logo" />
     </a>
@@ -12,13 +17,36 @@ import viteImg from './assets/vite.svg'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
+
+.screen {
+  width: 90vw;
+  height: 100vh;
+
+  max-width: 750px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1em;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+
+  font-style: italic;
+  font-size: 15px;
+}
+
 .logo {
-  height: 6em;
-  padding: 1.5em;
+  height: 2em;
+  padding: 0.25em 0.25em 0 0.25em;
   will-change: filter;
   transition: filter 300ms;
 }

@@ -6,7 +6,28 @@ import MessageBubble from "./MessageBubble.vue";
 import ProfilePicture from "./ProfilePicture.vue";
 import { WhoAmAiClient } from "../core/WhoAmAiClient";
 
-const messages = ref<string[]>([]);
+const messages = ref<string[]>([
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+  //'aölkdföasdlkfj',
+]);
 const entity = ref<string>("");
 const scrollable = ref();
 const gameFinished = ref(false);
@@ -60,35 +81,58 @@ async function checkIfCorrect(aiAnswer: string) {
 
 <template>
   <div class="container">
-    <ProfilePicture
-        :img-path="entityImagePathToBe"
-        class="entity-picture"
-        :key="entityImagePathToBe"
-    />
-    <Scrollable ref="scrollable" class="scrollable">
-      <MessageBubble
-          v-for="message in messages"
-          class="message-bubble"
-          style="position: relative"
-          :message="message"
+    <div class="scrollable-container">
+      <Scrollable ref="scrollable" class="scrollable">
+        <MessageBubble
+            v-for="message in messages"
+            class="message-bubble"
+            :message="message"
+        />
+      </Scrollable>
+      <ProfilePicture
+          class="entity-picture"
+          :img-path="entityImagePathToBe"
+          :key="entityImagePathToBe"
       />
-    </Scrollable>
-  </div>
+    </div>
 
-  <UserInput v-if="!gameFinished" @input="processInput" />
+    <UserInput
+        v-if="!gameFinished"
+        class="input"
+        @input="processInput"
+    />
+  </div>
 </template>
 
 <style scoped>
-.entity-picture {
-  position: absolute;
-  right: -80px;
-  top: -80px;
-}
 .container {
-  overflow: visible;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.scrollable-container {
   position: relative;
 }
+
 .scrollable {
+  position: relative;
+  min-width: 70vw;
+  min-height: 150px;
+  max-height: 70vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .message-bubble {
+    position: relative;
+  }
+
   .message-bubble:nth-child(even) {
     align-self: flex-start;
     background-color: lightcyan;
@@ -119,6 +163,7 @@ async function checkIfCorrect(aiAnswer: string) {
     transform: rotate(30deg) skew(45deg, 0deg);
   }
 }
+
 .message-bubble {
   animation: appear 1.5s ease-in-out forwards;
   @keyframes appear {
@@ -131,5 +176,19 @@ async function checkIfCorrect(aiAnswer: string) {
       opacity: 1;
     }
   }
+}
+
+.entity-picture {
+  position: absolute;
+  right: 0;
+  top: 0;
+
+  max-width: 200px;
+  transform: translate(70%, -70%);
+}
+
+.input {
+  margin-top: 20px;
+  width: 50%;
 }
 </style>

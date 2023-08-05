@@ -23,9 +23,6 @@ defineExpose({ scrollToBottom });
   flex-direction: column;
   align-items: center;
 
-  width: 700px;
-  min-height: 200px;
-  max-height: 70vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
 
