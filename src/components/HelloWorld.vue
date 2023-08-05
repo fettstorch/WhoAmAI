@@ -2,14 +2,9 @@
 import UserInput from "./UserInput.vue";
 import Scrollable from "./Scrollable.vue";
 import { onMounted, ref } from "vue";
-import {
-  getEntity,
-  getIntroAsPerson,
-  askQuestionAboutEntity,
-  getEntityImageUrl,
-} from "../core/ai";
 import MessageBubble from "./MessageBubble.vue";
 import ProfilePicture from "./ProfilePicture.vue";
+import {WhoAmAiClient} from "../core/WhoAmAiClient";
 
 const messages = ref<string[]>([]);
 const entity = ref<string>("");
@@ -18,32 +13,31 @@ const gameFinished = ref(false);
 const entityImagePathToBe = ref<string | undefined>(undefined);
 let entityImagePath: string | undefined = "";
 
+const whoAmAiClient = new WhoAmAiClient()
+
 onMounted(async () => {
-  entity.value = await getEntity();
+  const response = await whoAmAiClient.getEntity();
+  entity.value = response.entity;
   console.debug("entity", entity.value);
-  getEntityImageUrl({ entity: entity.value }).then(
-    (imgUrl) => (entityImagePath = imgUrl)
+
+  whoAmAiClient.getImage({ entity: entity.value }).then(
+    ({ imageUrl }) => (entityImagePath = imageUrl)
   );
-  addIntroductionMessage();
+
+  setTimeout(async () => {
+    messages.value.push(response.intro);
+  }, 2000);
 });
 
 //--- private utilities
 
-function addIntroductionMessage() {
-  const introMessage = getIntroAsPerson({ entity: entity.value });
-  setTimeout(async () => {
-    const introduction = await introMessage;
-    messages.value.push(introduction);
-  }, 3000);
-}
-
 async function processInput(question: string) {
-  const aiAnswerPromise = askQuestionAboutEntity({
+  const aiAnswerPromise = whoAmAiClient.askQuestion({
     entity: entity.value,
     question,
   });
   addMessageToChat(question);
-  const aiAnswer = (await aiAnswerPromise).toLocaleLowerCase();
+  const aiAnswer = (await aiAnswerPromise).answer.toLocaleLowerCase();
   addMessageToChat(aiAnswer);
 
   checkIfCorrect(aiAnswer);
