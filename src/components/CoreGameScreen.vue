@@ -89,12 +89,12 @@ async function checkIfCorrect(aiAnswer: string) {
   position: relative;
 }
 .scrollable {
-  .message-bubble:nth-child(odd) {
+  .message-bubble:nth-child(even) {
     align-self: flex-start;
     background-color: lightcyan;
     font-weight: 400;
   }
-  .message-bubble:nth-child(odd)::before {
+  .message-bubble:nth-child(even)::before {
     content: "";
     position: absolute;
     bottom: 0;
@@ -105,10 +105,10 @@ async function checkIfCorrect(aiAnswer: string) {
     transform: rotate(-30deg) skew(-45deg, 0deg);
   }
 
-  .message-bubble:nth-child(even) {
+  .message-bubble:nth-child(odd) {
     align-self: flex-end;
   }
-  .message-bubble:nth-child(even)::before {
+  .message-bubble:nth-child(odd)::before {
     content: "";
     position: absolute;
     bottom: 0;
