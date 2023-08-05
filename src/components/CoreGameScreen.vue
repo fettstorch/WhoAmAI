@@ -4,7 +4,7 @@ import Scrollable from "./Scrollable.vue";
 import { onMounted, ref } from "vue";
 import MessageBubble from "./MessageBubble.vue";
 import ProfilePicture from "./ProfilePicture.vue";
-import {WhoAmAiClient} from "../core/WhoAmAiClient";
+import { WhoAmAiClient } from "../core/WhoAmAiClient";
 
 const messages = ref<string[]>([]);
 const entity = ref<string>("");
@@ -18,7 +18,6 @@ const whoAmAiClient = new WhoAmAiClient()
 onMounted(async () => {
   const response = await whoAmAiClient.getEntity();
   entity.value = response.entity;
-  console.debug("entity", entity.value);
 
   whoAmAiClient.getImage({ entity: entity.value }).then(
     ({ imageUrl }) => (entityImagePath = imageUrl)
@@ -50,7 +49,6 @@ function addMessageToChat(message: string) {
 
 async function checkIfCorrect(aiAnswer: string) {
   const correctAnswer = `yes, I am ${entity.value}.`.toLowerCase();
-  console.debug({ correctAnswer, aiAnswer });
   if (aiAnswer.toLocaleLowerCase() === correctAnswer) {
     gameFinished.value = true;
     if (entityImagePath) {
