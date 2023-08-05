@@ -6,28 +6,7 @@ import MessageBubble from "./MessageBubble.vue";
 import ProfilePicture from "./ProfilePicture.vue";
 import { WhoAmAiClient } from "../core/WhoAmAiClient";
 
-const messages = ref<string[]>([
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-  //'aölkdföasdlkfj',
-]);
+const messages = ref<string[]>([]);
 const entity = ref<string>("");
 const scrollable = ref();
 const gameFinished = ref(false);
@@ -121,13 +100,8 @@ async function checkIfCorrect(aiAnswer: string) {
 .scrollable {
   position: relative;
   min-width: 70vw;
-  min-height: 150px;
+  min-height: 100px;
   max-height: 70vh;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
   .message-bubble {
     position: relative;
@@ -180,11 +154,10 @@ async function checkIfCorrect(aiAnswer: string) {
 
 .entity-picture {
   position: absolute;
-  right: 0;
+  left: 50%;
   top: 0;
 
-  max-width: 200px;
-  transform: translate(70%, -70%);
+  transform: translate(-50%, -80%);
 }
 
 .input {
