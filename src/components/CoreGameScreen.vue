@@ -27,8 +27,9 @@ onMounted(async () => {
   );
 
   setTimeout(async () => {
-    messages.value.push(response.intro);
-  }, 2000);
+    addMessageToChat(response.intro);
+    toggleWaiting();
+  }, 1000);
 });
 
 //--- private utilities
@@ -40,8 +41,10 @@ async function processInput(question: string) {
   });
   addMessageToChat(question);
 
+  toggleWaiting();
   const aiAnswer = (await aiAnswerPromise).answer.toLocaleLowerCase();
   addMessageToChat(aiAnswer);
+  toggleWaiting();
 
   checkIfCorrect(aiAnswer);
 }
@@ -50,7 +53,6 @@ function addMessageToChat(message: string) {
   messages.value.push(message);
   scrollable.value.scrollToBottom();
   userInput.value.toggle();
-  toggleWaiting();
 }
 
 function toggleWaiting() {
