@@ -1,10 +1,28 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 
 const rawInput = ref("");
+const inputEl = ref()
 const emit = defineEmits<{
   (e: "input", rawInput: string): void;
 }>();
+
+defineExpose({
+  toggle,
+});
+
+const active = ref(false);
+
+function toggle() {
+  active.value = !active.value;
+  nextTick(() => {
+    focus();
+  });
+}
+
+function focus() {
+  (inputEl.value as HTMLInputElement | undefined)?.focus();
+}
 
 function sendMessage() {
   emit("input", rawInput.value);
@@ -19,11 +37,13 @@ function clearInput() {
 <template>
   <div class="user-input-container">
     <input
-      type="text"
-      v-model="rawInput"
-      @keydown.enter="sendMessage"
-      placeholder="Enter your question..."
-      autofocus
+        ref="inputEl"
+        type="text"
+        v-model="rawInput"
+        @keydown.enter="sendMessage"
+        :disabled="!active"
+        placeholder="Enter your question..."
+        autofocus
     />
   </div>
 </template>

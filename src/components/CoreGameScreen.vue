@@ -9,17 +9,18 @@ import { WhoAmAiClient } from "../core/WhoAmAiClient";
 const messages = ref<string[]>([]);
 const entity = ref<string>("");
 const scrollable = ref();
+const userInput = ref();
 const gameFinished = ref(false);
 const entityImagePathToBe = ref<string | undefined>(undefined);
 let entityImagePath: string | undefined = "";
 
-const whoAmAiClient = new WhoAmAiClient()
+const client = new WhoAmAiClient()
 
 onMounted(async () => {
-  const response = await whoAmAiClient.getEntity();
+  const response = await client.getEntity();
   entity.value = response.entity;
 
-  whoAmAiClient.getImage({ entity: entity.value }).then(
+  client.getImage({ entity: entity.value }).then(
     ({ imageUrl }) => (entityImagePath = imageUrl)
   );
 
@@ -31,7 +32,7 @@ onMounted(async () => {
 //--- private utilities
 
 async function processInput(question: string) {
-  const aiAnswerPromise = whoAmAiClient.askQuestion({
+  const aiAnswerPromise = client.askQuestion({
     entity: entity.value,
     question,
   });
@@ -45,6 +46,7 @@ async function processInput(question: string) {
 function addMessageToChat(message: string) {
   messages.value.push(message);
   scrollable.value.scrollToBottom();
+  userInput.value.toggle();
 }
 
 async function checkIfCorrect(aiAnswer: string) {
@@ -77,6 +79,7 @@ async function checkIfCorrect(aiAnswer: string) {
 
     <UserInput
         v-if="!gameFinished"
+        ref="userInput"
         class="input"
         @input="processInput"
     />
