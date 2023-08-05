@@ -5,9 +5,11 @@ import { onMounted, ref } from "vue";
 import MessageBubble from "./MessageBubble.vue";
 import ProfilePicture from "./ProfilePicture.vue";
 import { WhoAmAiClient } from "../core/WhoAmAiClient";
+import WaitingBubble from "./WaitingBubble.vue";
 
 const messages = ref<string[]>([]);
 const entity = ref<string>("");
+const waiting = ref(true);
 const scrollable = ref();
 const userInput = ref();
 const gameFinished = ref(false);
@@ -37,6 +39,7 @@ async function processInput(question: string) {
     question,
   });
   addMessageToChat(question);
+
   const aiAnswer = (await aiAnswerPromise).answer.toLocaleLowerCase();
   addMessageToChat(aiAnswer);
 
@@ -47,6 +50,11 @@ function addMessageToChat(message: string) {
   messages.value.push(message);
   scrollable.value.scrollToBottom();
   userInput.value.toggle();
+  toggleWaiting();
+}
+
+function toggleWaiting() {
+  waiting.value = !waiting.value;
 }
 
 async function checkIfCorrect(aiAnswer: string) {
@@ -68,6 +76,10 @@ async function checkIfCorrect(aiAnswer: string) {
             v-for="message in messages"
             class="message-bubble"
             :message="message"
+        />
+        <WaitingBubble
+            v-if="waiting"
+            class="message-bubble"
         />
       </Scrollable>
       <ProfilePicture
