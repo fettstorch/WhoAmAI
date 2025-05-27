@@ -1,6 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
-const model = "gpt-4";
+const model = "gpt-4o";
 
 // Set up OpenAI API credentials
 const configuration = new Configuration({
@@ -133,7 +133,14 @@ export async function askQuestionAboutEntity(options: {
   });
   const gptAnswer = completion.data.choices[0].message?.content;
 
-  return gptAnswer?.replace(/'/g, "") ?? "pls try again";
+  // Clean up the response: remove quotes, decode URL encoding, normalize whitespace
+  const cleanedAnswer = gptAnswer
+    ?.replace(/'/g, "")
+    ?.replace(/\+/g, " ")
+    ?.replace(/%20/g, " ")
+    ?.trim();
+
+  return cleanedAnswer ?? "pls try again";
 }
 
 export async function getEntityImageUrl(options: {

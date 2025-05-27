@@ -1,7 +1,9 @@
 import { HttpClient } from "./HttpClient";
 
 export class WhoAmAiClient {
-    private readonly client = new HttpClient("https://who-am-ai.vercel.app/");
+    private readonly client = new HttpClient(
+        import.meta.env.DEV ? "" : "https://who-am-ai.vercel.app"
+    );
 
     getEntity() {
         return this.client.get<{

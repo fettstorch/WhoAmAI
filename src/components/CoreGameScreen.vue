@@ -60,8 +60,21 @@ function toggleWaiting() {
 }
 
 async function checkIfCorrect(aiAnswer: string) {
-  const correctAnswer = `yes, I am ${entity.value}.`.toLowerCase();
-  if (aiAnswer.toLocaleLowerCase() === correctAnswer) {
+  // Normalize both strings for comparison
+  const normalizeText = (text: string) => 
+    text.toLowerCase()
+        .replace(/\+/g, " ")
+        .replace(/%20/g, " ")
+        .replace(/['"]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+
+  const normalizedAnswer = normalizeText(aiAnswer);
+  const correctAnswer = normalizeText(`yes, I am ${entity.value}.`);
+  
+  console.log('🔍 Checking answer:', { normalizedAnswer, expectedAnswer: correctAnswer });
+  
+  if (normalizedAnswer === correctAnswer) {
     gameFinished.value = true;
     if (entityImagePath) {
       entityImagePathToBe.value = entityImagePath;
